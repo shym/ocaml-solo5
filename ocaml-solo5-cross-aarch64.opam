@@ -43,3 +43,8 @@ available: [
 synopsis: "Freestanding OCaml compiler"
 description:
   "This package provides a OCaml cross-compiler for ARM64, suitable for linking with a Solo5 unikernel."
+extra-source "ocaml-src.tar.gz" {
+  src: "https://github.com/ocaml/ocaml/archive/5.2.0-beta2.tar.gz"
+  checksum:
+    "sha256=3d76aef8d2fc7d454e7fee201553e7f3e8298d29c4f220e82911c207d72fc982"
+}
