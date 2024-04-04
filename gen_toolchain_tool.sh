@@ -17,6 +17,11 @@ gen_cc() {
   EXTRALIBS=""
 
   case "$ARCH" in
+    x86_64)
+      # The red zone is a hosted feature, Linux kernel disables it for instance
+      # Should we disable it also in Solo5?
+      CFLAGS="$TOOL_CFLAGS -mno-red-zone"
+      ;;
     aarch64)
       EXTRALIBS="-lgcc"
       ;;
