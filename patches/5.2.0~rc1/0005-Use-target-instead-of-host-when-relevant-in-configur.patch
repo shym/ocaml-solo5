@@ -1,0 +1,83 @@
+From aa99533d427b28195798d515186f6593b110e8ef Mon Sep 17 00:00:00 2001
+From: Samuel Hym <samuel.hym@rustyne.lautre.net>
+Date: Wed, 21 Feb 2024 19:05:44 +0100
+Subject: [PATCH 05/14] Use `target` instead of `host` when relevant in
+ configuration
+
+---
+ configure    | Bin 683025 -> 682390 bytes
+ configure.ac |  10 +++++-----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/configure b/configure
+index 2f08bb1ab9a2bb11bd0f340ebe5a32ecb23e7539..810cf9fffb8510edb4ef95edd683a132ca023f95 100755
+GIT binary patch
+delta 389
+zcmbPuLvz|?&4w+E**m6B*uf}1y<{(=GH*#@QF>}gd}2;!VzKV@hZk9G(S!sFnHFq6
+zzLRkeBdWyqiMtsa8K-~H;^Y$YaZyrGQ&UJPN=?k>O3BYl<(hskkx7y%Gi~~ZOeR(S
+z#N_zol6W5%TNNJ{E(L|@eLEN>w*#%8%`!dYFry$}YEE$~P+UO)s6<JrJ?Stb5HkTW
+zGZ3=?G3)lE!)$gutYFt}Uwocz2h;RvW}N)nGcK{kH9?q{L)h(vryHJQl;cP7R8GqD
+zkJ-$o7=nf`8D~s?ox{$#-7k~<8Y70h;6=v1?MJfNc^IcNr7}xSf0M&51oP4Ke>v>3
+v(;wbol;3WV%ihj1U8tB{UKH*P7tbJ9=Ma#GfxgizW(Q)9?Rv$WkADCFyQ_@w
+
+delta 377
+zcmbPsS##nI&4w+E**m5OeP&Xf{{Iv!KYLD!LQZC0_V&PhCPl{Wb9OTBVVoX(i)qR9
+z-@6%KPk&#`#KYv{GX2ACCZ*~8dl`9n6O-eUOX7W8Y*l<*xV8uGW!%Ct{ni5}K_MR(
+zB?ViB3TuUujMO|X1t6GyPM=L}dVCaf>GaHNtOC<x)-bt&SjIdc?J$GdRSq!%F%u9o
+z12GE_vu;;8#Ae4c-QJp=cYEPEwslO?&+KR8-L7|$Ev{*L$0=6c?X!c~?Sw(z2xiJj
+znI5RZX*#WpS&%Vh`o+_%GpGAzuybsGoz8xZak@wnvj9j5V>)x+_P8u|9>(eazcWcs
+z_sL-AoZg+y&NY2cHoNTfX=ZG)+ka%Ux3f(DAIU7J;NltN>Kp>}C%UJg61e<kGQFvQ
+TU8a3o0Xq<LY~NPE`QQftL)M4X
+
+diff --git a/configure.ac b/configure.ac
+index 4f8cecf15a..6d4025dc55 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -597,7 +597,7 @@ AS_IF([test x"$enable_ocamldoc" = "xno"],
+ # Initialization of libtool
+ # Allow the MSVC linker to be found even if ld isn't installed.
+ # User-specified LD still takes precedence.
+-AC_CHECK_TOOLS([LD],[ld link])
++AC_CHECK_TARGET_TOOLS([LD],[ld link])
+ # libtool expects host_os=mingw for native Windows
+ # Also, it has been observed that, on some platforms (e.g. msvc) LT_INIT
+ # alters the CFLAGS variable, so we save its value before calling the macro
+@@ -1027,7 +1027,7 @@ AS_CASE([$flexdll_source_dir,$supports_shared_libraries,$flexlink,$host],
+ 
+ mkexe_cmd_exp="$CC"
+ 
+-AS_CASE([$ocaml_cc_vendor,$host],
++AS_CASE([$ocaml_cc_vendor,$target],
+   [*,x86_64-*-darwin*],
+     [oc_ldflags='-Wl,-no_compact_unwind';
+     AC_DEFINE([HAS_ARCH_CODE32], [1])],
+@@ -1045,7 +1045,7 @@ AS_CASE([$ocaml_cc_vendor,$host],
+     )
+     ostype="Cygwin"],
+   [*,*-*-mingw32*],
+-    [AS_CASE([$host],
++    [AS_CASE([$target],
+       [i686-*-*], [oc_dll_ldflags="-static-libgcc"])
+     ostype="Win32"
+     toolchain="mingw"
+@@ -1342,7 +1342,7 @@ system=unknown
+ # preserving $arch = 'none' <=> $system = 'unknown'
+ has_native_backend=no
+ native_ldflags=""
+-AS_CASE([$host],
++AS_CASE([$target],
+   [[i[3456]86-*-linux*]],
+     [arch=i386; system=linux],
+   [[i[3456]86-*-freebsd*]],
+@@ -1479,7 +1479,7 @@ AS_IF([$natdynlink],
+ 
+ AC_DEFINE_UNQUOTED([OCAML_OS_TYPE], ["$ostype"])
+ 
+-AC_CHECK_TOOL([DIRECT_LD],[ld])
++AC_CHECK_TARGET_TOOL([DIRECT_LD],[ld])
+ AS_IF([test -z "$PARTIALLD"],
+   [AS_CASE(["$host,$ocaml_cc_vendor"],
+     [x86_64-*-darwin*,gcc-*], [PACKLD_FLAGS=' -arch x86_64'],
+-- 
+2.43.0
+
