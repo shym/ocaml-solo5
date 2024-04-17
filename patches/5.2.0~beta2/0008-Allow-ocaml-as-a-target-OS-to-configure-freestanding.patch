@@ -1,0 +1,65 @@
+From ec29e8becfed76b109fedc63c5d895a8cce1ac16 Mon Sep 17 00:00:00 2001
+From: Samuel Hym <samuel.hym@rustyne.lautre.net>
+Date: Mon, 26 Feb 2024 11:51:11 +0100
+Subject: [PATCH 08/14] Allow `ocaml` as a target OS to configure freestanding
+ cross-compilers
+
+Allow the use of *-*-ocaml or *-*-*-ocaml target triplets to stand for
+freestanding cross-compilers by temporarily rewriting the target OS to
+`none` when generating the canonical target
+
+This allows to use *-*-ocaml and *-*-*-ocaml prefixes for cross-compiler
+specific toolchains, so that all the specific tools (for instance
+aarch64-solo5-ocaml-gcc, etc.) are automatically discovered
+---
+ configure    | Bin 682375 -> 682884 bytes
+ configure.ac |  17 +++++++++++++++++
+ 2 files changed, 17 insertions(+)
+
+diff --git a/configure b/configure
+index 97aad962d1af69e461c0a66ec81924799ef71a05..baa5801900b179c59b2c52069572e9a9323ec5f2 100755
+GIT binary patch
+delta 550
+zcmb7Ay-EW?5awe1I~#kO$>t!QaE%s%A%zHvl|>%l7|%&u*t-q8i!oT7g>Xg66uyX%
+zI*l)2VdY!+08UQPiy|n?x6FJqeDlo|PvPBjc>CaO7I_m6mC{2HI>A&4Kno5{pB$WZ
+zp{EV>43Tx1UC68tiB1Pnk%99OI7$cFppj|>hK5Eu?(m!7E~z5nG>A-RB!HtnWn|EC
+zoqG~wK9>oqk9OY>s`!0+j7p;Ih@hGZKS4{dz=6!5x$Oh&MDtf}5yAlz0GPxUuP8n}
+z?sfwHN^+jGqE;DO${k!U3YLZHR5r021$$As#ivA25r=mB%ftU199h2fpB(%?e$v?3
+rx)-mt{pm^J-P9Z3%>THmC}v}iQDZDI>WpQ^3S*VAHl2;vA79=8l()39
+
+delta 60
+zcmZp<uGxNBvtbLPK>PHHW=8YvN}Y_=EbaSy8G)Dyh?#*H#AgL!HXvpPVvg<mdpVEZ
+F1ppAK8tMQ5
+
+diff --git a/configure.ac b/configure.ac
+index 10df138754..46bb92878f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -287,7 +287,24 @@ AC_CONFIG_COMMANDS_PRE(OCAML_QUOTED_STRING_ID)
+ 
+ AC_CANONICAL_BUILD
+ AC_CANONICAL_HOST
++# Allow "ocaml" as target OS for freestanding compiler by temporarily rewriting
++# the target OS to "none" to generate the canonical target
++real_target_alias="$target_alias"
++AS_CASE([$target_alias],
++  [*-*-*-ocaml],
++    [ac_save_IFS=$IFS
++    IFS='-'
++    set x $target_alias
++    target_alias="$2-$3-none"
++    IFS=$ac_save_IFS],
++  [*-*-ocaml],
++    [ac_save_IFS=$IFS
++    IFS='-'
++    set x $target_alias
++    target_alias="$2-none"
++    IFS=$ac_save_IFS])
+ AC_CANONICAL_TARGET
++target_alias="$real_target_alias"
+ 
+ # Override cross_compiling and ac_tool_prefix variables since the C toolchain is
+ # used to generate target code when building a cross compiler
+-- 
+2.43.0
+

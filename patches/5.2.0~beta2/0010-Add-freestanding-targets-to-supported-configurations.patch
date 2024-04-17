@@ -1,0 +1,41 @@
+From 29a4805526c1dca8ac1f7fa81a3ae0c7de57b700 Mon Sep 17 00:00:00 2001
+From: Samuel Hym <samuel.hym@rustyne.lautre.net>
+Date: Mon, 26 Feb 2024 19:35:26 +0100
+Subject: [PATCH 10/14] Add freestanding targets to supported configurations
+
+---
+ configure    | Bin 682934 -> 683089 bytes
+ configure.ac |   6 +++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index 65d75f72f15b39190c7e93fad5cba4523812c252..f7b58c3463a962d8aa82b0e5665851e8f1d7b715 100755
+GIT binary patch
+delta 98
+zcmdmXUGw4%&4w1n7N!>F7M2#)7Pc+yJCdi%N3nDAR#=$Do0;fp>E`9<rA~jCz;4V8
+sWKI9*!7j=S6;Yc$KZ%`}6{LV`vLd&1`;}yNAm#vK&h1x{xgN0t0Jjn&DgXcg
+
+delta 51
+zcmcb3Lv!18&4w1n7N!>F7M2#)7Pc+yJCdhwwB;0@o^Xy$puH@G9f&!Am~(qs3fFCR
+E01VR;KmY&$
+
+diff --git a/configure.ac b/configure.ac
+index c2d8945071..9fd979e3de 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1459,7 +1459,11 @@ AS_CASE([$target],
+   [x86_64-*-cygwin*],
+     [has_native_backend=yes; arch=amd64; system=cygwin],
+   [riscv64-*-linux*],
+-    [has_native_backend=yes; arch=riscv; model=riscv64; system=linux]
++    [has_native_backend=yes; arch=riscv; model=riscv64; system=linux],
++  [x86_64-*-none],
++    [has_native_backend=yes; arch=amd64; system=none],
++  [aarch64-*-none],
++    [has_native_backend=yes; arch=arm64; system=none]
+ )
+ 
+ AS_CASE([$arch],
+-- 
+2.43.0
+
