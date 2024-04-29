@@ -1,7 +1,7 @@
 From 3a811f54eb8b087ccbcebf40898053c37afec2a5 Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Tue, 27 Feb 2024 16:22:58 +0100
-Subject: [PATCH 02/13] Include `config.h` before `HAS_GETTIMEOFDAY` is tested
+Subject: [PATCH 02/14] Include `config.h` before `HAS_GETTIMEOFDAY` is tested
 
 Also remove a duplicate `errno.h`
 ---

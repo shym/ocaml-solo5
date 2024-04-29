@@ -1,7 +1,7 @@
 From 7353c75e772ad2beed7d4f9344e7d777d2786556 Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Wed, 21 Feb 2024 18:47:12 +0100
-Subject: [PATCH 03/13] Detect and use {CC,...}_FOR_BUILD to build sak
+Subject: [PATCH 03/14] Detect and use {CC,...}_FOR_BUILD to build sak
 
 ---
  Makefile                          |   9 +-

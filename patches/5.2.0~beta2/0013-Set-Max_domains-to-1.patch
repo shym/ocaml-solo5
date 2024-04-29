@@ -1,7 +1,7 @@
 From eefe2cd555f7ee8e6ca3008702f23e33a6cd3cab Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Fri, 12 Apr 2024 19:21:52 +0200
-Subject: [PATCH 13/13] Set Max_domains to 1
+Subject: [PATCH 13/14] Set Max_domains to 1
 
 Solo5 is single-core with no scheduler, so avoid the useless memory
 waste

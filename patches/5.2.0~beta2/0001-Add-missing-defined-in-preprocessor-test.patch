@@ -1,7 +1,7 @@
 From 8300488c8891138da0bb490f1e74aaa9acfe11bd Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Tue, 27 Feb 2024 16:14:38 +0100
-Subject: [PATCH 01/13] Add missing `defined` in preprocessor test
+Subject: [PATCH 01/14] Add missing `defined` in preprocessor test
 
 When `HAS_CLOCK_GETTIME_NSEC_NP` is not defined,
 `#elif HAS_CLOCK_GETTIME_NSEC_NP` triggers a warning

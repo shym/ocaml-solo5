@@ -1,7 +1,7 @@
 From 2b54182296fad1e9e77bc6a5406ced4850128364 Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Mon, 26 Feb 2024 19:35:26 +0100
-Subject: [PATCH 09/13] Add freestanding targets to supported configurations
+Subject: [PATCH 09/14] Add freestanding targets to supported configurations
 
 ---
  configure    | Bin 682932 -> 683087 bytes

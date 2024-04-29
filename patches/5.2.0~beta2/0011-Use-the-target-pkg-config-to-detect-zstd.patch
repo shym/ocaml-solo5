@@ -1,7 +1,7 @@
 From 5d794e027ff9e2690622a9a2ce5ccba139451a02 Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Wed, 20 Mar 2024 17:41:26 +0100
-Subject: [PATCH 11/13] Use the target pkg-config to detect zstd
+Subject: [PATCH 11/14] Use the target pkg-config to detect zstd
 
 Make sure that we don't detect zstd on build when we are building a
 cross-compiler, as the native zstd has no reason to be compatible with

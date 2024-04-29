@@ -1,7 +1,7 @@
 From 6d522758a2ead363666eeb5ddbd3b99b23cd3dc4 Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Mon, 26 Feb 2024 12:06:45 +0100
-Subject: [PATCH 08/13] Define OS type to None
+Subject: [PATCH 08/14] Define OS type to None
 
 ---
  configure    | Bin 682882 -> 682932 bytes

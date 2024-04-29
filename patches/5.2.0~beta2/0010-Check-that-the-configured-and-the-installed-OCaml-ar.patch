@@ -1,7 +1,7 @@
 From 099399cee91a0a0930e51dcc6274aa1cbd7ba334 Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Tue, 19 Mar 2024 19:14:29 +0100
-Subject: [PATCH 10/13] Check that the configured and the installed OCaml are
+Subject: [PATCH 10/14] Check that the configured and the installed OCaml are
  compatible
 
 ---

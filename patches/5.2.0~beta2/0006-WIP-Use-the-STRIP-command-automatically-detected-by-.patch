@@ -1,7 +1,7 @@
 From f6f07d207f853931da0b86e6850e71459e7dfe55 Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Fri, 23 Feb 2024 12:00:32 +0100
-Subject: [PATCH 06/13] WIP Use the STRIP command automatically detected by
+Subject: [PATCH 06/14] WIP Use the STRIP command automatically detected by
  libtool
 
 libtool configuration will try and detect the `strip` for the code

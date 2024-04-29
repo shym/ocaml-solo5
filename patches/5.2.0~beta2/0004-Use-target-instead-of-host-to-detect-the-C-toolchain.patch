@@ -1,7 +1,7 @@
 From 9454c7ed8a83504a2c6f6dd98937f08b37c9a7ad Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Thu, 22 Feb 2024 13:37:28 +0100
-Subject: [PATCH 04/13] Use `target` instead of `host` to detect the C
+Subject: [PATCH 04/14] Use `target` instead of `host` to detect the C
  toolchain
 
 When building a cross-compiler, the runtime will run on the target, not

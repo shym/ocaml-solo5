@@ -1,7 +1,7 @@
 From bd0e90919cea8757301115da1698728dd89f4709 Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel.hym@rustyne.lautre.net>
 Date: Fri, 23 Feb 2024 16:56:07 +0100
-Subject: [PATCH 12/13] WIP Add a Makefile.cross for recipes to build a
+Subject: [PATCH 12/14] WIP Add a Makefile.cross for recipes to build a
  cross-compiler
 
 Define cross.opt and cross-install targets
