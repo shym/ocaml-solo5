@@ -93,7 +93,7 @@ gen_tool() {
   esac
   if test "$TARGET_TOOL" ; then
     TOOL="$TARGET_TOOL"
-  elif command -v "$SOLO5_TOOLCHAIN-$TOOL" > /dev/null; then
+  elif command -v -- "$SOLO5_TOOLCHAIN-$TOOL" > /dev/null; then
     TOOL="$SOLO5_TOOLCHAIN-$TOOL"
   else
     case "$TOOL" in
@@ -101,7 +101,7 @@ gen_tool() {
         TOOL="$SOLO5_TOOLCHAIN-cc -c"
         ;;
       *)
-        if command -v "$OTHERTOOLPREFIX$TOOL" > /dev/null; then
+        if command -v -- "$OTHERTOOLPREFIX$TOOL" > /dev/null; then
           TOOL="$OTHERTOOLPREFIX$TOOL"
         fi
         ;;
