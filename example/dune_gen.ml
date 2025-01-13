@@ -1,15 +1,19 @@
 let print_rule test exitcode extraif =
-  Printf.printf {|(test
- (name %s)
- (enabled_if
-  |} test;
-  (match extraif with
-  | None -> ()
-  | Some cnd -> Printf.printf {|(and
+  let enabled_if () =
+    Printf.printf {|(enabled_if
+  |};
+    (match extraif with
+    | None -> ()
+    | Some cnd -> Printf.printf {|(and
    %s
    |} cnd);
-  Printf.printf {|(= %%{context_name} solo5))|};
-  (match extraif with None -> () | Some _ -> Printf.printf ")");
+    Printf.printf {|(= %%{context_name} solo5))|};
+    match extraif with None -> () | Some _ -> Printf.printf ")"
+  in
+  Printf.printf {|(executable
+ (name %s)
+ |} test;
+  enabled_if ();
   Printf.printf
     {|
  (modules %s)
@@ -21,9 +25,16 @@ let print_rule test exitcode extraif =
   -cclib
   "-u __solo5_mft1_note")
  (libraries solo5os)
- (action
-  |}
+ (modes native))
+
+(rule
+ (alias runtest)
+ |}
     test;
+  enabled_if ();
+  Printf.printf {|
+ (action
+  |};
   (match exitcode with
   | None -> ()
   | Some x -> Printf.printf {|(with-accepted-exit-codes
@@ -37,4 +48,7 @@ let print_rule test exitcode extraif =
 
 let _ =
   print_rule "hello" None None;
-  print_rule "sysfail" (Some 2) None
+  print_rule "sysfail" (Some 2) None;
+  print_rule "config" None None;
+  print_rule "compilerlibsx86" None
+    (Some "(>= %{ocaml_version} 5.3.0) (= %{architecture} amd64)")
