@@ -121,7 +121,7 @@ ocaml/Makefile.config: $(LIBS) $(TOOLCHAIN_FOR_BUILD) | ocaml
 
 OCAML_IS_BUILT := _build/ocaml_is_built
 $(OCAML_IS_BUILT): ocaml/Makefile.config | _build
-	PATH="$$PWD/$(TOOLDIR_FOR_BUILD):$$PATH" $(MAKE) -C ocaml cross.opt
+	PATH="$$PWD/$(TOOLDIR_FOR_BUILD):$$PATH" $(MAKE) -C ocaml crossopt OLDS="-o yacc/ocamlyacc -o lex/ocamllex"
 	cd ocaml && ocamlrun tools/stripdebug ocamlc ocamlc.tmp
 	cd ocaml && ocamlrun tools/stripdebug ocamlopt ocamlopt.tmp
 	touch $@
