@@ -80,7 +80,7 @@
   ; Force linking in the manifest
   -cclib
   "-u __solo5_mft1_note")
- (libraries solo5os)
+ (libraries solo5os compiler-libs.optcomp)
  (modes native))
 
 (rule

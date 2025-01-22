@@ -1,4 +1,4 @@
-let print_rule test exitcode extraif =
+let print_rule test exitcode extraif extralibs =
   let enabled_if () =
     Printf.printf {|(enabled_if
   |};
@@ -24,13 +24,15 @@ let print_rule test exitcode extraif =
   ; Force linking in the manifest
   -cclib
   "-u __solo5_mft1_note")
- (libraries solo5os)
+ (libraries solo5os|}
+    test;
+  List.iter (Printf.printf " %s") extralibs;
+  Printf.printf {|)
  (modes native))
 
 (rule
  (alias runtest)
- |}
-    test;
+ |};
   enabled_if ();
   Printf.printf {|
  (action
@@ -47,8 +49,9 @@ let print_rule test exitcode extraif =
 |}
 
 let _ =
-  print_rule "hello" None None;
-  print_rule "sysfail" (Some 2) None;
-  print_rule "config" None None;
+  print_rule "hello" None None [];
+  print_rule "sysfail" (Some 2) None [];
+  print_rule "config" None None [];
   print_rule "compilerlibsx86" None
     (Some "(>= %{ocaml_version} 5.3.0) (= %{architecture} amd64)")
+    [ "compiler-libs.optcomp" ]
