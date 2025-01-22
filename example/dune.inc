@@ -70,7 +70,8 @@
  (name compilerlibsx86)
  (enabled_if
   (and
-   (>= %{ocaml_version} 5.3.0) (= %{architecture} amd64)
+   (>= %{ocaml_version} 5.3.0)
+   (= %{architecture} amd64)
    (= %{context_name} solo5)))
  (modules compilerlibsx86)
  (link_flags
@@ -87,7 +88,8 @@
  (alias runtest)
  (enabled_if
   (and
-   (>= %{ocaml_version} 5.3.0) (= %{architecture} amd64)
+   (>= %{ocaml_version} 5.3.0)
+   (= %{architecture} amd64)
    (= %{context_name} solo5)))
  (action
   (run "solo5-%{env:MODE=hvt}" "%{dep:compilerlibsx86.exe}")))

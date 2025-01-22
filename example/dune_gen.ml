@@ -1,21 +1,21 @@
-let print_rule test exitcode extraif extralibs =
-  let enabled_if () =
-    Printf.printf {|(enabled_if
+let print_rule test exitcode extraifs extralibs =
+  let enabled_if out extraifs =
+    Printf.fprintf out {|(enabled_if
   |};
-    (match extraif with
-    | None -> ()
-    | Some cnd -> Printf.printf {|(and
-   %s
-   |} cnd);
-    Printf.printf {|(= %%{context_name} solo5))|};
-    match extraif with None -> () | Some _ -> Printf.printf ")"
+    (match extraifs with
+    | [] -> ()
+    | _ ->
+        Printf.fprintf out {|(and
+   |};
+        List.iter (Printf.fprintf out {|%s
+   |}) extraifs);
+    Printf.fprintf out {|(= %%{context_name} solo5))|};
+    match extraifs with [] -> () | _ -> Printf.fprintf out ")"
   in
-  Printf.printf {|(executable
- (name %s)
- |} test;
-  enabled_if ();
   Printf.printf
-    {|
+    {|(executable
+ (name %s)
+ %a
  (modules %s)
  (link_flags
   :standard
@@ -24,34 +24,35 @@ let print_rule test exitcode extraif extralibs =
   ; Force linking in the manifest
   -cclib
   "-u __solo5_mft1_note")
- (libraries solo5os|}
-    test;
-  List.iter (Printf.printf " %s") extralibs;
-  Printf.printf {|)
+ (libraries solo5os%a)
  (modes native))
 
 (rule
  (alias runtest)
- |};
-  enabled_if ();
-  Printf.printf {|
+ %a
  (action
-  |};
-  (match exitcode with
-  | None -> ()
-  | Some x -> Printf.printf {|(with-accepted-exit-codes
-   %d
-   |} x);
-  Printf.printf {|(run "solo5-%%{env:MODE=hvt}" "%%{dep:%s.exe}")))%s%s|} test
-    (match exitcode with None -> "" | Some _ -> ")")
-    {|
+  %a(run "solo5-%%{env:MODE=hvt}" "%%{dep:%s.exe}")%a))
 
 |}
+    test enabled_if extraifs test
+    (fun out -> List.iter (Printf.fprintf out " %s"))
+    extralibs enabled_if extraifs
+    (fun out exitcode ->
+      match exitcode with
+      | None -> ()
+      | Some code ->
+          Printf.fprintf out {|(with-accepted-exit-codes
+   %d
+   |} code)
+    exitcode test
+    (fun out exitcode ->
+      match exitcode with None -> () | Some _ -> Printf.fprintf out ")")
+    exitcode
 
 let _ =
-  print_rule "hello" None None [];
-  print_rule "sysfail" (Some 2) None [];
-  print_rule "config" None None [];
+  print_rule "hello" None [] [];
+  print_rule "sysfail" (Some 2) [] [];
+  print_rule "config" None [] [];
   print_rule "compilerlibsx86" None
-    (Some "(>= %{ocaml_version} 5.3.0) (= %{architecture} amd64)")
+    [ "(>= %{ocaml_version} 5.3.0)"; "(= %{architecture} amd64)" ]
     [ "compiler-libs.optcomp" ]
