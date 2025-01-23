@@ -13,24 +13,10 @@ CC=cc
 CFLAGS=-O2 -std=c99 -Wall -Wno-parentheses -Werror
 CFLAGS+=$(FREESTANDING_CFLAGS)
 
-OBJS=assert.o \
-     ctype.o \
-     dtoa.o \
-     errlist.o strerror_r.o \
-     memchr.o memcmp.o memcpy.o memmove.o memset.o \
-     strcmp.o strlen.o strnlen.o strtol.o strchr.o strchrnul.o strncpy.o stpncpy.o \
-     strstr.o strncmp.o puts.o \
-     stubs.o \
-     vfprintf.o vsnprintf.o snprintf.o fprintf.o printf.o \
-     sysconf.o \
-     mmap.o
-
 dtoa.o: CFLAGS+=-fno-strict-aliasing
 
-SYSDEP_OBJS=sysdeps_solo5.o
-
-libnolibc.a: $(OBJS) $(SYSDEP_OBJS)
-	$(AR) rcs $@ $(OBJS) $(SYSDEP_OBJS)
+libnolibc.a: $(patsubst %.c,%.o,$(wildcard *.c))
+	$(AR) rcs $@ $^
 
 # The following test ensures that each header file provided by nolibc is both
 # self-contained and compile-tested. Note that headers in include/_freestanding
