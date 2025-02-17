@@ -113,8 +113,9 @@ STUB_IGNORE(int, pthread_create, EAGAIN);
 STUB_IGNORE(int, pthread_attr_init, 0);
 STUB_ABORT(pthread_cleanup_push);
 STUB_ABORT(pthread_cleanup_pop);
+STUB_ABORT(pthread_exit);
+STUB_ABORT(pthread_cancel);
 
-/* above that line, for OCaml 5, those are only required (i guess) for the configure step */
 STUB_IGNORE(int, pthread_mutex_lock, 0);
 STUB_IGNORE(int, pthread_mutex_trylock, 0);
 STUB_IGNORE(int, pthread_mutex_unlock, 0);
