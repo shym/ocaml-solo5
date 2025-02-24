@@ -1,7 +1,7 @@
-From cd4dd12e963bcf2bc54920a2230c1a2b2c697abb Mon Sep 17 00:00:00 2001
+From d5e79fe4ecb1782cc53d3f3639e7a7511f58d522 Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel@tarides.com>
 Date: Fri, 12 Apr 2024 19:21:52 +0200
-Subject: [PATCH 22/22] Set `Max_domains_{def,max}` to 1
+Subject: [PATCH 21/21] Set `Max_domains_{def,max}` to 1
 
 Solo5 is single-core with no scheduler, so avoid the useless memory
 waste
