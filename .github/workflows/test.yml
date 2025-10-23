@@ -16,7 +16,9 @@ jobs:
           *.opam
           !ocaml-solo5-cross-aarch64.opam
     - name: Install ocaml-solo5 and dune
-      run: opam install ocaml-solo5 conf-libseccomp dune
+      run: |
+        opam pin add -n solo5 'https://github.com/shym/solo5.git#noexecstack'
+        opam install ocaml-solo5 conf-libseccomp dune
     - name: Show the toolchain configuration
       run: |
         set -x
