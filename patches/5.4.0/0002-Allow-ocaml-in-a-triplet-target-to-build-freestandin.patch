@@ -1,4 +1,4 @@
-From 9e347c544bfa1dfe940f1961d1548d6c16eb4e09 Mon Sep 17 00:00:00 2001
+From 126ef9d01e512a82c6cd79bf74d0b3e9e9d5cec0 Mon Sep 17 00:00:00 2001
 From: Samuel Hym <samuel@tarides.com>
 Date: Mon, 26 Feb 2024 11:51:11 +0100
 Subject: [PATCH 2/3] Allow `ocaml` in a triplet target to build freestanding
@@ -13,12 +13,12 @@ This allows to use a `*-*-ocaml-` prefixes (ie `x86_64-solo5-ocaml-`) to
 create cross-compiler toolchains dedicated to specific freestanding
 targets
 ---
- configure    | Bin 738675 -> 739161 bytes
+ configure    | Bin 738624 -> 739110 bytes
  configure.ac |  13 +++++++++++++
  2 files changed, 13 insertions(+)
 
 diff --git a/configure b/configure
-index 4c54453646..a243ae55cb 100755
+index 1f0c06d943..04f729c00c 100755
 --- a/configure
 +++ b/configure
 @@ -3690,6 +3690,21 @@ IFS=$ac_save_IFS
@@ -52,7 +52,7 @@ index 4c54453646..a243ae55cb 100755
  # Override cross_compiling and ac_tool_prefix variables since the C toolchain is
  # used to generate target code when building a cross compiler
 diff --git a/configure.ac b/configure.ac
-index 0335bdf184..856384d8ba 100644
+index 8e5e1e9300..d634d70bf2 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -302,7 +302,20 @@ AC_CONFIG_COMMANDS_PRE(OCAML_QUOTED_STRING_ID)
