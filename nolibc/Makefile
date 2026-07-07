@@ -12,7 +12,7 @@ clean:
 CC=cc
 # -Wno-asm-operand-widths: openlibm's aarch64 fenv asm (openlibm_fenv_arm.h,
 # pulled in via -Iopenlibm/include) trips clang's check under -Werror.
-CFLAGS=-O2 -std=c99 -Wall -Wno-parentheses -Wno-asm-operand-widths -Werror
+CFLAGS=-O2 -std=c99 -Wall -Wno-parentheses -Werror
 CFLAGS+=$(FREESTANDING_CFLAGS)
 
 OBJS=assert.o \
