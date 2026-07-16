@@ -73,9 +73,21 @@ jobs:
       with:
         ocaml-compiler: 5.4.1
         opam-pin: false
-    - name: Build the cross-compiler
+    - name: Build dependencies
       run: |
-        opam pin add -n solo5 git+https://github.com/samoht/solo5.git#macos
         opam pin add -n solo5-cross-aarch64 git+https://github.com/samoht/solo5.git#macos
-        opam pin add -n ocaml-solo5-cross-aarch64 .
-        opam install ocaml-solo5-cross-aarch64
+        opam install solo5-cross-aarch64 ocamlfind ocaml-src opatch
+    - name: Build OCaml/Solo5
+      run: |
+        set -x
+        eval $(opam env)
+        pfx="$(opam var prefix)"
+        ./configure.sh --prefix="$pfx" \
+          --sysroot="$pfx/lib/ocaml-solo5" \
+          --target=aarch64-solo5-none-static \
+          --othertoolprefix=llvm- \
+          --ocaml-configure-option=--disable-function-sections \
+          --path-prepend="$(brew --prefix llvm)/bin:$(brew --prefix lld)/bin:"
+        export __V=1
+        make V=1 -j2
+        make install
