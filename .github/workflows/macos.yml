@@ -28,7 +28,7 @@ jobs:
       uses: actions/checkout@v7
       with:
         repository: shym/solo5
-        ref: macos
+        ref: macos-2
         path: solo5
     - name: Install dependencies
       run: brew install llvm lld
@@ -37,7 +37,8 @@ jobs:
         set -x
         cd solo5
         ./configure.sh --prefix="$(opam var prefix)" --disable-elftool \
-          --path-prepend="$(brew --prefix llvm)/bin:$(brew --prefix lld)/bin:"
+          --path-prepend="$(brew --prefix llvm)/bin" \
+          --path-prepend="$(brew --prefix lld)/bin"
         make -j2
         make install
     - name: Build OCaml/Solo5
