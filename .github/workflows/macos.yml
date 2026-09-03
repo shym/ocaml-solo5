@@ -34,11 +34,18 @@ jobs:
       run: |
         set -x
         cd solo5
-        ./configure.sh --prefix="$(opam var prefix)" --disable-elftool \
-          --path-prepend="$(brew --prefix llvm)/bin" \
-          --path-prepend="$(brew --prefix lld)/bin"
+        TARGET_CC="$(brew --prefix llvm)/bin/clang -target aarch64-linux-gnu" \
+          TARGET_OBJCOPY="$(brew --prefix llvm)/bin/llvm-objcopy" \
+          TARGET_LD="$(brew --prefix lld)/bin/ld.lld" \
+          ./configure.sh --prefix="$(opam var prefix)" --disable-elftool
         make -j2
         make install
+    - name: Debug
+      run: |
+        set -x
+        cat $(command -v aarch64-solo5-none-static-cc)
+        cat $(command -v aarch64-solo5-none-static-ld)
+        cat $(command -v aarch64-solo5-none-static-objcopy)
     - name: Build OCaml/Solo5
       run: |
         set -x
