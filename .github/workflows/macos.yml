@@ -42,6 +42,7 @@ jobs:
         make install
     - name: Debug
       run: |
+        eval $(opam env)
         set -x
         cat $(command -v aarch64-solo5-none-static-cc)
         cat $(command -v aarch64-solo5-none-static-ld)
@@ -54,11 +55,24 @@ jobs:
         ./configure.sh --prefix="$pfx" \
           --sysroot="$pfx/lib/ocaml-solo5" \
           --target=aarch64-solo5-none-static \
-          --othertoolprefix=llvm- \
-          --ocaml-configure-option=--disable-function-sections \
-          --path-prepend="$(brew --prefix llvm)/bin:$(brew --prefix lld)/bin:"
+          --othertoolprefix="$(brew --prefix llvm)/bin/llvm-" \
+          --ocaml-configure-option=--disable-function-sections
         make V=1 -j2
         make install
+    - name: Debug
+      run: |
+        eval $(opam env)
+        set -x
+        cat $(command -v aarch64-solo5-ocaml-cc)
+        cat $(command -v aarch64-solo5-ocaml-ar)
+        cat $(command -v aarch64-solo5-ocaml-as)
+        cat $(command -v aarch64-solo5-ocaml-ld)
+        cat $(command -v aarch64-solo5-ocaml-nm)
+        cat $(command -v aarch64-solo5-ocaml-objcopy)
+        cat $(command -v aarch64-solo5-ocaml-objdump)
+        cat $(command -v aarch64-solo5-ocaml-ranlib)
+        cat $(command -v aarch64-solo5-ocaml-readelf)
+        cat $(command -v aarch64-solo5-ocaml-strip)
     - name: Show the toolchain configuration
       run: |
         set -x
