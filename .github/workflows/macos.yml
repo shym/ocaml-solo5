@@ -74,9 +74,11 @@ jobs:
         cat $(command -v aarch64-solo5-ocaml-readelf)
         cat $(command -v aarch64-solo5-ocaml-strip)
     - name: Show the toolchain configuration
+      env:
+        OCAMLRUNPARAM: b
       run: |
         set -x
-        opam exec -- ocamlfind -toolchain solo5 opt -config
+        opam exec -- ocamlfind -toolchain solo5 opt -config -verbose
         opam exec -- ocamlfind -toolchain solo5 printconf
         opam exec -- ocamlfind -toolchain solo5 list
 
