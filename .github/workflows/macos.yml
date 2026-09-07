@@ -59,6 +59,9 @@ jobs:
         make V=1 -j2
         make install
     - name: Show the toolchain configuration
+      env:
+        OCAMLRUNPARAM: b
+        OCAMLFIND_DEBUG: y
       run: |
         set -x
         opam exec -- ocamlfind -toolchain solo5 printconf
