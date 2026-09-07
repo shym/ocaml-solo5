@@ -22,6 +22,12 @@ jobs:
     - name: Install opam packages
       run: |
         opam install dune ocamlfind ocaml-src opatch opam-installer
+    - name: Show the toolchain configuration
+      run: |
+        set -x
+        opam exec -- ocamlfind printconf
+        opam exec -- ocamlfind opt -config
+        opam exec -- ocamlfind list
     - name: Check out Solo5
       uses: actions/checkout@v7
       with:
@@ -55,9 +61,9 @@ jobs:
     - name: Show the toolchain configuration
       run: |
         set -x
-        opam exec -- ocamlfind -toolchain solo5 opt -config
         opam exec -- ocamlfind -toolchain solo5 printconf
         opam exec -- ocamlfind -toolchain solo5 list
+        opam exec -- ocamlfind -toolchain solo5 opt -config
 
     # Do not build all the examples as hello is trying to link against an
     # external fmt library and the opam-installed fmt is incompatible with the
