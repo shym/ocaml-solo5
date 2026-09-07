@@ -21,7 +21,7 @@ jobs:
         opam-local-packages:
     - name: Install opam packages
       run: |
-        opam install dune ocamlfind ocaml-src opatch opam-installer
+        opam install dune ocamlfind.1.9.8 ocaml-src opatch opam-installer
     - name: Check out Solo5
       uses: actions/checkout@v7
       with:
