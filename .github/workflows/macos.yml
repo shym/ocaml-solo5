@@ -58,7 +58,10 @@ jobs:
           --target=aarch64-solo5-none-static \
           --othertoolprefix="$(brew --prefix llvm)/bin/llvm-" \
           --ocaml-configure-option=--disable-function-sections
-        make V=1 -j2
+        make V=1 -j2 ocaml/Makefile.config
+        (cd ocaml && ../_build/build-toolchain/aarch64-solo5-ocaml-gcc -O2 -fno-strict-aliasing -fwrapv -g -Wall -Wint-conversion -Wstrict-prototypes -Wold-style-definition -Wundef -Wimplicit-fallthrough -fno-common  -pthread -I ./runtime  -D_FILE_OFFSET_BITS=64  -DCAMLDLLIMPORT= -DIN_CAML_RUNTIME  -o runtime/domain.b.s  -S runtime/domain.c)
+        cat ocaml/runtime/domain.b.s
+        make V=1 -j2 || ( $(brew --prefix llvm)/bin/llvm-objdump --disassemble-symbols=caml_thread_record_domain_id ocaml/runtime/domain.b.o ; exit 4 )
         make install
     - name: Log (some of) the generated C toolchain
       run: |
