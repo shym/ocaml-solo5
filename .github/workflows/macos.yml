@@ -37,7 +37,7 @@ jobs:
         TARGET_CC="$(brew --prefix llvm)/bin/clang -target aarch64-linux-gnu" \
           TARGET_CC_CFLAGS="-target aarch64-linux-gnu" \
           TARGET_OBJCOPY="$(brew --prefix llvm)/bin/llvm-objcopy" \
-          TARGET_LD="$(brew --prefix lld)/bin/ld.lld" \
+          TARGET_LD="ld.lld" \
           ./configure.sh --prefix="$(opam var prefix)" --disable-elftool
         make -j2
         make install
