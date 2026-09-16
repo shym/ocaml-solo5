@@ -63,7 +63,7 @@ jobs:
         res=0
         make V=1 -j2 || res=$?
         $(brew --prefix llvm)/bin/llvm-objdump --disassemble-symbols=caml_thread_record_domain_id ocaml/runtime/domain.b.o
-        $(brew --prefix llvm)/bin/llvm-objdump --disassemble-symbols=caml_thread_record_domain_id ocaml/runtime/libcamlrun.a
+        $(brew --prefix llvm)/bin/llvm-objdump -t ocaml/runtime/ocamlrun
         make install
     - name: Log (some of) the generated C toolchain
       run: |
