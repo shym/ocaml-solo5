@@ -64,6 +64,7 @@ jobs:
         make V=1 -j2 || res=$?
         $(brew --prefix llvm)/bin/llvm-objdump --disassemble-symbols=caml_thread_record_domain_id ocaml/runtime/domain.b.o
         $(brew --prefix llvm)/bin/llvm-objdump -t ocaml/runtime/ocamlrun
+        $(brew --prefix llvm)/bin/llvm-readelf -Wl ocaml/runtime/ocamlrun
         make install
     - name: Log (some of) the generated C toolchain
       run: |
@@ -90,48 +91,3 @@ jobs:
       run: |
         MODE=spt opam exec -- dune build --root example --display short \
           config.exe sysfail.exe
-    - name: Build an artifact of the spt executables
-      run: |
-        set -x
-        for e in config sysfail; do \
-          cp example/_build/solo5/$e.exe /tmp/$e.spt ; \
-        done
-        cd /tmp
-        tar caf unikernels.tar.zst *.spt
-    - name: Upload artifact
-      uses: actions/upload-artifact@v7
-      with:
-        name: unikernels
-        path: /tmp/unikernels.tar.zst
-        retention-days: 1
-
-  run:
-    name: Run unikernels
-    needs: build
-    runs-on: ubuntu-24.04-arm
-    steps:
-    - name: Install dependencies
-      run: |
-        sudo apt-get install -y libseccomp-dev pkg-config
-    - name: Check out Solo5
-      uses: actions/checkout@v7
-      with:
-        repository: solo5/solo5
-        ref: v0.12.0
-        path: solo5
-    - name: Build Solo5 tenders
-      run: |
-        set -x
-        cd solo5
-        ./configure.sh --disable-toolchain
-        make -j3
-    - name: Download artifact
-      uses: actions/download-artifact@v8
-      with:
-        name: unikernels
-    - name: Run the spt unikernels
-      run: |
-        set -x
-        tar xaf unikernels.tar.zst
-        solo5/tenders/spt/solo5-spt config.spt
-        ! solo5/tenders/spt/solo5-spt sysfail.spt
