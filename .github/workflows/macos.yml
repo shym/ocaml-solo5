@@ -14,9 +14,18 @@ jobs:
       OCaml ${{ matrix.ocaml-compiler }}, macOS arm64
     runs-on: ${{ matrix.runner }}
     steps:
+    - name: Content before
+      run: |
+        find /opt/homebrew
     - name: Install dependencies
       run: brew install gcc
-    - name: Content
+    - name: Content after
+      run: |
+        find /opt/homebrew
+    - name: which
       run: |
         set -x
-        find $(brew --prefix gcc)
+        gcc -dumpmachine
+        aarch64-linux-gnu-gcc -dumpmachine || echo Error: $?
+        aarch64-pc-linux-gnu-gcc -dumpmachine || echo Error: $?
+        x86_64-pc-linux-gnu-gcc -dumpmachine || echo Error: $?
