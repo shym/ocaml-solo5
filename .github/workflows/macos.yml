@@ -14,81 +14,9 @@ jobs:
       OCaml ${{ matrix.ocaml-compiler }}, macOS arm64
     runs-on: ${{ matrix.runner }}
     steps:
-    - uses: actions/checkout@v7
-    - uses: ocaml/setup-ocaml@v3
-      with:
-        ocaml-compiler: ${{ matrix.ocaml-compiler }}
-        opam-local-packages:
-    - name: Install opam packages
-      run: |
-        opam install dune ocamlfind ocaml-src opatch opam-installer
-    - name: Check out Solo5
-      uses: actions/checkout@v7
-      with:
-        repository: shym/solo5
-        ref: macos-4
-        path: solo5
     - name: Install dependencies
-      run: brew install llvm lld
-    - name: Build and install Solo5
+      run: brew install gcc
+    - name: Content
       run: |
         set -x
-        cd solo5
-        TARGET_CC="$(brew --prefix llvm)/bin/clang -target aarch64-linux-gnu" \
-          TARGET_CC_CFLAGS="-target aarch64-linux-gnu" \
-          TARGET_OBJCOPY="$(brew --prefix llvm)/bin/llvm-objcopy" \
-          TARGET_LD="$(brew --prefix lld)/bin/ld.lld" \
-          ./configure.sh --prefix="$(opam var prefix)" --disable-elftool
-        make -j2
-        make install
-    - name: Log the Solo5 toolchain
-      run: |
-        eval $(opam env)
-        set -x
-        printf '\n################################\n\n' > sep
-        cat $(command -v aarch64-solo5-none-static-cc) sep \
-            $(command -v aarch64-solo5-none-static-ld) sep \
-            $(command -v aarch64-solo5-none-static-objcopy)
-    - name: Build OCaml/Solo5
-      run: |
-        set -x
-        eval $(opam env)
-        pfx="$(opam var prefix)"
-        ./configure.sh --prefix="$pfx" \
-          --target=aarch64-solo5-none-static \
-          --othertoolprefix="$(brew --prefix llvm)/bin/llvm-" \
-          --ocaml-configure-option=--disable-function-sections
-        make V=1 -j2 ocaml/Makefile.config
-        (cd ocaml && ../_build/build-toolchain/aarch64-solo5-ocaml-gcc -O2 -fno-strict-aliasing -fwrapv -g -Wall -Wint-conversion -Wstrict-prototypes -Wold-style-definition -Wundef -Wimplicit-fallthrough -fno-common  -pthread -I ./runtime  -D_FILE_OFFSET_BITS=64  -DCAMLDLLIMPORT= -DIN_CAML_RUNTIME  -o runtime/domain.b.s  -S runtime/domain.c)
-        cat ocaml/runtime/domain.b.s
-        res=0
-        make V=1 -j2 || res=$?
-        $(brew --prefix llvm)/bin/llvm-objdump --disassemble-symbols=caml_thread_record_domain_id ocaml/runtime/domain.b.o
-        $(brew --prefix llvm)/bin/llvm-objdump -t ocaml/runtime/ocamlrun
-        $(brew --prefix llvm)/bin/llvm-readelf -Wl ocaml/runtime/ocamlrun
-        make install
-    - name: Log (some of) the generated C toolchain
-      run: |
-        eval $(opam env)
-        set -x
-        cat $(command -v aarch64-solo5-ocaml-cc) sep \
-            $(command -v aarch64-solo5-ocaml-ld) sep \
-            $(command -v aarch64-solo5-ocaml-nm)
-    - name: Show the toolchain configuration
-      run: |
-        set -x
-        opam exec -- ocamlfind -toolchain solo5 opt -config
-        opam exec -- ocamlfind -toolchain solo5 printconf
-        opam exec -- ocamlfind -toolchain solo5 list
-
-    # Do not build all the examples as hello is trying to link against an
-    # external fmt library and the opam-installed fmt is incompatible with the
-    # OCaml/Solo5 Stdlib (inconsistent assumptions...)
-    - name: Compile examples with hvt
-      run: |
-        MODE=hvt opam exec -- dune build --root example --display short \
-          config.exe sysfail.exe
-    - name: Compile examples with spt
-      run: |
-        MODE=spt opam exec -- dune build --root example --display short \
-          config.exe sysfail.exe
+        find $(brew --prefix gcc)
