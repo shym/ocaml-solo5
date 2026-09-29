@@ -34,7 +34,7 @@ jobs:
       run: |
         set -x
         cd solo5
-        TARGET_CC="$(brew --prefix llvm)/bin/clang -target aarch64-linux-gnu" \
+        TARGET_CC="$(brew --prefix llvm)/bin/clang -target aarch64-linux-gnu -mtls-size=32" \
           TARGET_OBJCOPY="$(brew --prefix llvm)/bin/llvm-objcopy" \
           TARGET_LD="$(brew --prefix lld)/bin/ld.lld" \
           ./configure.sh --prefix="$(opam var prefix)" --disable-elftool
