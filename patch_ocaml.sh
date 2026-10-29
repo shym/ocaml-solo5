@@ -11,6 +11,11 @@ case "$(sed --version 2>&1)" in
   *) sep=' ' ;;
 esac
 
+inplace_sed() {
+  # shellcheck disable=SC2086
+  sed -i$sep'' "$@"
+}
+
 # PATCH 1: Set `Max_domains_{def,max}` to 1
 #
 # Solo5 is single-core with no scheduler, so avoid the useless memory
@@ -19,7 +24,7 @@ esac
 # We have in examples/startup.c a test whether this was successful:
 # - we check Max_domains_{def,max} as well as caml_params->max_domains to be 1
 
-sed -i$sep'' \
+inplace_sed \
   -e 's/#define Max_domains_def 128/#define Max_domains_def 1/' \
   -e 's/#define Max_domains_max 4096/#define Max_domains_max 1/' \
   ocaml/runtime/caml/domain.h
@@ -30,6 +35,7 @@ sed -i$sep'' \
 # the host-provided "fmt" package is compiled with a differently checksummed
 # Stdlib.
 
-sed -i$sep'' \
+# shellcheck disable=SC2016
+inplace_sed \
   -e 's/ostype="None"/ostype="$(ocamlc -config-var os_type)"/' \
   ocaml/configure
